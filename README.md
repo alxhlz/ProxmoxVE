@@ -4,9 +4,9 @@ ProxmoxVE API Client
 This **PHP 7.2+** library allows you to interact with your Proxmox server via API.
 
 ![Test pipeline](https://github.com/lehuizi/ProxmoxVE/workflows/Test%20pipeline/badge.svg?branch=main)
-[![Latest Stable Version](https://poser.pugx.org/lehuizi/proxmoxve/v/stable.svg)](https://packagist.org/packages/zzantares/proxmoxve)
-[![Total Downloads](https://poser.pugx.org/lehuizi/proxmoxve/downloads.svg)](https://packagist.org/packages/zzantares/proxmoxve)
-[![License](https://poser.pugx.org/zzantares/proxmoxve/license.svg)](https://packagist.org/packages/zzantares/proxmoxve)
+[![Latest Stable Version](https://poser.pugx.org/lehuizi/proxmoxve/v/stable.svg)](https://packagist.org/packages/lehuizi/proxmoxve)
+[![Total Downloads](https://poser.pugx.org/lehuizi/proxmoxve/downloads.svg)](https://packagist.org/packages/lehuizi/proxmoxve)
+[![License](https://poser.pugx.org/zzantares/proxmoxve/license.svg)](https://packagist.org/packages/lehuizi/proxmoxve)
 
 Installation
 ------------
