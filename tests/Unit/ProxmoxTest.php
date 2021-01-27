@@ -57,6 +57,7 @@ it('throws exception when protected credentials object with password auth is pas
 test('get credentials with all values using token auth', function () {
     $ids = [
         'hostname' => 'some.proxmox.tld',
+        'username' => 'root',
         'token_name' => 'myapitoken',
         'token_value' => '00000000-0000-0000-0000-000000000000',
     ];
