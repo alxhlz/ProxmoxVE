@@ -15,4 +15,3 @@ class ProtectedCredentials
         $this->password = $pass;
     }
 }
-

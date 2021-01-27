@@ -4,7 +4,7 @@
  * This file is part of the ProxmoxVE PHP API wrapper library (unofficial).
  *
  * @copyright 2014 César Muñoz <zzantares@gmail.com>
- * @license http://opensource.org/licenses/MIT The MIT License.
+ * @license   http://opensource.org/licenses/MIT The MIT License.
  */
 
 namespace ProxmoxVE;
@@ -55,11 +55,11 @@ class AuthToken
     /**
      * Constructor.
      *
-     * @param string $username   The username that owns the login ticket.
-     * @param string $ticket     The ticket representing a valid session given
-     *                           by Proxmox at login time.
-     * @param string $csrf       The CSRF prevention token given by Proxmox at
-     *                           login time.
+     * @param string $username The username that owns the login ticket.
+     * @param string $ticket   The ticket representing a valid session given
+     *                         by Proxmox at login time.
+     * @param string $csrf     The CSRF prevention token given by Proxmox at
+     *                         login time.
      */
     public function __construct($csrf, $ticket, $username)
     {

@@ -10,4 +10,3 @@ class IncompleteCredentials
         $this->password = $pass;
     }
 }
-
