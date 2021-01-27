@@ -27,7 +27,12 @@ class Credentials
     /**
      * @var string The Proxmox hostname (or IP address) to connect to.
      */
-    private $type;
+    private $method;
+
+    /**
+     * @var string The Proxmox authorization header for token based authentication.
+     */
+    private $authorization_header;
 
     /**
      * @var string The credentials token_name used to authenticate with Proxmox.
@@ -75,19 +80,26 @@ class Credentials
             throw new MalformedCredentialsException($error);
         }
 
+        $this->hostname = $credentials['hostname'];
+        $this->username = $credentials['username'];
+        $this->realm = $credentials['realm'];
+        $this->port = $credentials['port'];
+
         if ($credentials['method'] == 'token') {
             $this->token_name = $credentials['token_name'];
             $this->token_value = $credentials['token_value'];
+            $this->authorization_header = sprintf(
+                'PVEAPIToken=%s@%s!%s=%s',
+                $this->username,
+                $this->realm,
+                $this->token_name,
+                $this->token_value
+            );
             $this->method = 'token';
         } elseif ($credentials['method'] == 'password') {
-            $this->username = $credentials['username'];
             $this->password = $credentials['password'];
             $this->method = 'password';
         }
-
-        $this->hostname = $credentials['hostname'];
-        $this->realm = $credentials['realm'];
-        $this->port = $credentials['port'];
     }
 
 
@@ -140,6 +152,20 @@ class Credentials
     public function getMethod()
     {
         return $this->method;
+    }
+
+
+    /**
+     * Gets the full authorization header that will be used
+     * to authenticate against the proxmox api instead of using
+     * a ticket.
+     *
+     * @return string The method that is used to authenticate against
+     *                proxmox api.
+     */
+    public function getAuthorizationHeader()
+    {
+        return $this->authorization_header;
     }
 
 
@@ -263,7 +289,7 @@ class Credentials
     {
 
         if (array_key_exists('token_name', $credentials) || array_key_exists('token_value', $credentials)) {
-            $requiredKeys = ['hostname', 'token_name', 'token_value'];
+            $requiredKeys = ['hostname', 'username', 'token_name', 'token_value'];
             $credentials['method'] = 'token';
         } else {
             $requiredKeys = ['hostname', 'username', 'password'];
@@ -306,7 +332,7 @@ class Credentials
         // Trying to find variables
         $objectProperties = array_keys(get_object_vars($credentials));
         if (array_key_exists('token_name', $objectProperties) || array_key_exists('token_value', $objectProperties)) {
-            $requiredProperties = ['hostname', 'token_name', 'token_value'];
+            $requiredProperties = ['hostname', 'username', 'token_name', 'token_value'];
             $method = 'token';
         } else {
             $requiredProperties = ['hostname', 'username', 'password'];
