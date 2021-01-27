@@ -83,7 +83,7 @@ class Proxmox
     ) {
         $this->setHttpClient($httpClient);
 
-        // Set credentials and login to the Proxmox server.
+        // Set credentials for the proxmox server
         $this->setCredentials($credentials);
 
         $this->setResponseType($responseType);
@@ -108,13 +108,22 @@ class Proxmox
     {
         $url = $this->getApiUrl() . $actionPath;
 
-        $cookies = CookieJar::fromArray([
-            'PVEAuthCookie' => $this->authToken->getTicket(),
-        ], $this->credentials->getHostname());
+        if ($this->credentials->getMethod() == 'password') {
+            $cookies = CookieJar::fromArray([
+                'PVEAuthCookie' => $this->authToken->getTicket(),
+            ], $this->credentials->getHostname());
+            $headers = [];
+        } elseif ($this->credentials->getMethod() == 'token') {
+            $cookies = [];
+            $headers = [
+                'Authorization' => $this->credentials->getAuthorizationHeader(),
+            ];
+        }
 
         switch ($method) {
             case 'GET':
                 return $this->httpClient->get($url, [
+                    'headers' => $headers,
                     'verify' => false,
                     'http_errors' => false,
                     'cookies' => $cookies,
@@ -243,7 +252,9 @@ class Proxmox
         }
 
         $this->credentials = $credentials;
-        $this->authToken = $this->login();
+        if ($this->credentials->getMethod() == 'password') {
+            $this->authToken = $this->login();
+        }
     }
 
 
