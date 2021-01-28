@@ -112,7 +112,9 @@ class Proxmox
             $cookies = CookieJar::fromArray([
                 'PVEAuthCookie' => $this->authToken->getTicket(),
             ], $this->credentials->getHostname());
-            $headers = [];
+            $headers = [
+                'CSRFPreventionToken' => $this->authToken->getCsrf(),
+            ];
         } elseif ($this->credentials->getMethod() == 'token') {
             $cookies = [];
             $headers = [
@@ -130,12 +132,23 @@ class Proxmox
                     'query' => $params,
                 ]);
             case 'POST':
+                return $this->httpClient->post($url, [
+                    'headers' => $headers,
+                    'verify' => false,
+                    'http_errors' => false,
+                    'cookies' => $cookies,
+                    'query' => $params,
+                ]);
             case 'PUT':
+                return $this->httpClient->put($url, [
+                    'headers' => $headers,
+                    'verify' => false,
+                    'http_errors' => false,
+                    'cookies' => $cookies,
+                    'query' => $params,
+                ]);
             case 'DELETE':
-                $headers = [
-                    'CSRFPreventionToken' => $this->authToken->getCsrf(),
-                ];
-                return $this->httpClient->request($method, $url, [
+                return $this->httpClient->delete($method, $url, [
                     'verify' => false,
                     'http_errors' => false,
                     'cookies' => $cookies,
