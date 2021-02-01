@@ -148,7 +148,7 @@ class Proxmox
                     'query' => $params,
                 ]);
             case 'DELETE':
-                return $this->httpClient->delete($method, $url, [
+                return $this->httpClient->delete($url, [
                     'verify' => false,
                     'http_errors' => false,
                     'cookies' => $cookies,
